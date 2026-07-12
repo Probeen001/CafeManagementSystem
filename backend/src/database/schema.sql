@@ -87,6 +87,8 @@ CREATE TABLE orders (
 
   order_type VARCHAR(20) DEFAULT 'dine_in',
 
+  table_number SMALLINT,
+
   order_status VARCHAR(30) DEFAULT 'new',
 
   subtotal NUMERIC(10,2) DEFAULT 0,
@@ -116,7 +118,10 @@ CREATE TABLE orders (
   ),
 
   CONSTRAINT chk_order_type
-  CHECK (order_type IN ('dine_in', 'take_away'))
+  CHECK (order_type IN ('dine_in', 'take_away')),
+
+  CONSTRAINT chk_order_table
+  CHECK (table_number IS NULL OR table_number > 0)
 );
 
 -- ===========================
@@ -242,12 +247,14 @@ INSERT INTO menu_items (category_id, name, description, price, is_available) VAL
   ((SELECT id FROM categories WHERE name='Coffee'), 'Flat White',       'Ristretto shots with velvety microfoam',                 140, true),
   ((SELECT id FROM categories WHERE name='Coffee'), 'Espresso',         'Pure concentrated coffee shot',                           80, true),
   ((SELECT id FROM categories WHERE name='Coffee'), 'Mocha',            'Espresso with chocolate syrup and steamed milk',         150, true),
+  ((SELECT id FROM categories WHERE name='Coffee'), 'Masala Chai',      'Aromatic milk tea simmered with warming house spices',    70, true),
 
   -- Cold Drinks
   ((SELECT id FROM categories WHERE name='Cold Drinks'), 'Cold Coffee',      'Chilled brew with milk and ice',                        110, true),
   ((SELECT id FROM categories WHERE name='Cold Drinks'), 'Iced Latte',       'Espresso over ice with cold milk',                      130, true),
   ((SELECT id FROM categories WHERE name='Cold Drinks'), 'Cold Brew',        'Slow-steeped smooth cold brew coffee',                  140, true),
   ((SELECT id FROM categories WHERE name='Cold Drinks'), 'Frappuccino',      'Blended ice coffee with whipped cream',                 170, true),
+  ((SELECT id FROM categories WHERE name='Cold Drinks'), 'Iced Lemon Tea',   'Fresh black tea with citrus, mint, and crushed ice',     100, true),
   ((SELECT id FROM categories WHERE name='Cold Drinks'), 'Lemonade',         'Fresh squeezed lemon with mint',                         80, true),
   ((SELECT id FROM categories WHERE name='Cold Drinks'), 'Mango Smoothie',   'Fresh mango blended with yogurt',                       120, true),
 
@@ -272,3 +279,22 @@ INSERT INTO menu_items (category_id, name, description, price, is_available) VAL
   ((SELECT id FROM categories WHERE name='Desserts'), 'Chocolate Lava',   'Warm molten chocolate cake',                             150, true),
   ((SELECT id FROM categories WHERE name='Desserts'), 'Tiramisu',         'Classic Italian coffee-soaked ladyfinger cake',          160, true),
   ((SELECT id FROM categories WHERE name='Desserts'), 'Waffle',           'Belgian waffle with maple syrup and berries',            140, true);
+
+-- Give every seeded drink a local, purpose-built menu image. These paths are
+-- shared by the staff POS, the admin menu, and the admin order detail view.
+UPDATE menu_items
+SET image_url = CASE name
+  WHEN 'Cold Coffee' THEN '/images/menu/iced-drink.svg'
+  WHEN 'Iced Latte' THEN '/images/menu/iced-drink.svg'
+  WHEN 'Cold Brew' THEN '/images/menu/iced-drink.svg'
+  WHEN 'Frappuccino' THEN '/images/menu/iced-drink.svg'
+  WHEN 'Butter Tea' THEN '/images/menu/tea.svg'
+  WHEN 'Masala Chai' THEN '/images/menu/tea.svg'
+  WHEN 'Iced Lemon Tea' THEN '/images/menu/tea.svg'
+  WHEN 'Lemonade' THEN '/images/menu/tea.svg'
+  WHEN 'Mango Smoothie' THEN '/images/menu/smoothie.svg'
+  ELSE '/images/menu/coffee.svg'
+END
+WHERE category_id IN (
+  SELECT id FROM categories WHERE name IN ('Coffee', 'Cold Drinks')
+);

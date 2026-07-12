@@ -37,8 +37,9 @@ function sanitizeStaff(staff) {
 async function registerStaff(req, res, next) {
   try {
     const { fullName, email, password, phone, role } = req.body
+    const normalizedPassword = typeof password === 'string' ? password.trim() : ''
 
-    if (!fullName || !email || !password) {
+    if (!fullName || !email || !normalizedPassword) {
       return res.status(400).json({
         message: 'Full name, email, and password are required',
       })
@@ -52,7 +53,7 @@ async function registerStaff(req, res, next) {
       return res.status(409).json({ message: 'Email is already registered' })
     }
 
-    const passwordHash = await bcrypt.hash(password, 12)
+    const passwordHash = await bcrypt.hash(normalizedPassword, 12)
     const staff = await createStaff({
       fullName: fullName.trim(),
       email: normalizedEmail,

@@ -21,8 +21,8 @@ async function protect(req, res, next) {
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET)
     const result = await db.query(
-      `SELECT id, full_name, email, role, is_active, created_at, updated_at, last_login_at
-       FROM staff_accounts
+      `SELECT id, full_name, email, phone, role, is_active, created_at, updated_at
+       FROM users
        WHERE id = $1`,
       [decoded.id],
     )
