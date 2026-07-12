@@ -14,13 +14,19 @@ export default function ForgotPasswordPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    const trimmedEmail = email.trim().toLowerCase()
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
+      setError('Please enter a valid email address.')
+      return
+    }
+
     setError('')
     setLoading(true)
     try {
-      await authService.forgotPassword(email.trim().toLowerCase())
+      await authService.forgotPassword(trimmedEmail)
       setSubmitted(true)
     } catch (err) {
-      // Show server message if present, otherwise generic fallback
       setError(err?.response?.data?.message ?? 'Something went wrong. Please try again.')
     } finally {
       setLoading(false)
@@ -164,6 +170,7 @@ export default function ForgotPasswordPage() {
                     placeholder="you@gmail.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    autoComplete="email"
                     required
                     autoFocus
                     style={{

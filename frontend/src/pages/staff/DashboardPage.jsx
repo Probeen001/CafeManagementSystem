@@ -1,22 +1,16 @@
 import { motion } from 'framer-motion'
 import {
   ArrowRight, CheckCircle, Circle, ClipboardList,
-  Clock, Coffee, ShoppingBag, TrendingUp,
+  Clock, Coffee, TrendingUp,
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { StatusBadge } from '../../components/ui/Badge'
 import { useAuth } from '../../contexts/AuthContext'
 
 const LIVE_ORDERS = [
-  { id: '#1034', status: 'New',      time: '11:30 AM', items: 'Cappuccino, Burger',   amount: '₹ 270' },
-  { id: '#1033', status: 'Preparing',time: '11:20 AM', items: 'Cold Coffee, Brownie', amount: '₹ 210' },
-  { id: '#1032', status: 'Ready',    time: '11:10 AM', items: 'Latte, Sandwich',      amount: '₹ 150' },
-]
-
-const COMPLETED = [
-  { id: '#1031', time: '25m ago', amount: '₹ 270' },
-  { id: '#1030', time: '35m ago', amount: '₹ 210' },
-  { id: '#1029', time: '55m ago', amount: '₹ 100' },
+  { id: '#1034', status: 'New',      time: '11:30 AM', items: 'Cappuccino, Burger',   amount: 'Rs 270' },
+  { id: '#1033', status: 'Preparing',time: '11:20 AM', items: 'Cold Coffee, Brownie', amount: 'Rs 210' },
+  { id: '#1032', status: 'Ready',    time: '11:10 AM', items: 'Latte, Sandwich',      amount: 'Rs 150' },
 ]
 
 export default function StaffDashboardPage() {
@@ -93,7 +87,7 @@ export default function StaffDashboardPage() {
             { label: "Open Orders",     value: '8',           icon: ClipboardList, color: '#2E7D32', bg: 'rgba(46,125,50,0.1)' },
             { label: "Completed",        value: '42',          icon: CheckCircle,   color: '#2563EB', bg: '#EFF6FF' },
             { label: "In Progress",      value: '3',           icon: Clock,         color: '#D97706', bg: '#FFFBEB' },
-            { label: "Today's Sales",    value: '₹ 12,430',    icon: TrendingUp,    color: '#F97316', bg: 'rgba(249,115,22,0.1)' },
+            { label: "Today's Sales",    value: 'Rs 12,430',    icon: TrendingUp,    color: '#F97316', bg: 'rgba(249,115,22,0.1)' },
           ].map((m, i) => {
             const Icon = m.icon
             return (

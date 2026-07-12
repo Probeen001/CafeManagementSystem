@@ -1,4 +1,5 @@
 import { useAuth } from '../context/AuthContext'
+import { Link } from 'react-router-dom'
 
 export default function DashboardPage() {
   const { staff, logout, isAdmin } = useAuth()
@@ -13,9 +14,16 @@ export default function DashboardPage() {
             Signed in as {staff?.role}. {isAdmin ? 'Admin access granted.' : 'Staff access granted.'}
           </p>
         </div>
-        <button className="ghost-button" type="button" onClick={logout}>
-          Logout
-        </button>
+        <div className="topbar-actions">
+          {isAdmin && (
+            <Link className="ghost-button" to="/categories">
+              Manage Categories
+            </Link>
+          )}
+          <button className="ghost-button" type="button" onClick={logout}>
+            Logout
+          </button>
+        </div>
       </header>
 
       <main className="dashboard-grid">

@@ -12,7 +12,7 @@ import { StatusBadge } from '../../components/ui/Badge'
 const metrics = [
   {
     label: 'Total Sales',
-    value: '₹ 24,350',
+    value: 'Rs 24,350',
     icon: Wallet,
     trend: 12.9,
     trendLabel: 'vs yesterday',
@@ -38,7 +38,7 @@ const metrics = [
   },
   {
     label: 'Avg Order',
-    value: '₹ 190',
+    value: 'Rs 190',
     icon: TrendingUp,
     trend: -3.2,
     trendLabel: 'vs yesterday',
@@ -48,10 +48,10 @@ const metrics = [
 ]
 
 const recentOrders = [
-  { id: '#1024', time: '11:30 AM', amount: '₹ 270',  status: 'New',       items: 2 },
-  { id: '#1023', time: '11:20 AM', amount: '₹ 210',  status: 'Preparing', items: 2 },
-  { id: '#1022', time: '11:10 AM', amount: '₹ 100',  status: 'Ready',     items: 1 },
-  { id: '#1021', time: '10:55 AM', amount: '₹ 260',  status: 'Completed', items: 3 },
+  { id: '#1024', time: '11:30 AM', amount: 'Rs 270',  status: 'New',       items: 2 },
+  { id: '#1023', time: '11:20 AM', amount: 'Rs 210',  status: 'Preparing', items: 2 },
+  { id: '#1022', time: '11:10 AM', amount: 'Rs 100',  status: 'Ready',     items: 1 },
+  { id: '#1021', time: '10:55 AM', amount: 'Rs 260',  status: 'Completed', items: 3 },
 ]
 
 const topItems = [

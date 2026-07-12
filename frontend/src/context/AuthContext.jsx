@@ -1,3 +1,5 @@
+/* eslint-disable react-refresh/only-export-components */
+
 import { createContext, useContext, useEffect, useState } from 'react'
 import api from '../api/axios'
 
@@ -19,7 +21,7 @@ export function AuthProvider({ children }) {
       try {
         const response = await api.get('/auth/me')
         setStaff(response.data.staff)
-      } catch (authError) {
+      } catch {
         localStorage.removeItem('cafex_token')
         setToken(null)
         setStaff(null)
@@ -59,7 +61,7 @@ export function AuthProvider({ children }) {
   const logout = async () => {
     try {
       await api.post('/auth/logout')
-    } catch (logoutError) {
+    } catch {
       // Session is cleared locally even if the API request fails.
     } finally {
       localStorage.removeItem('cafex_token')

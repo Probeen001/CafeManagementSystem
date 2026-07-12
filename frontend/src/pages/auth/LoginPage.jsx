@@ -19,14 +19,22 @@ export default function LoginPage({ brand = 'admin' }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    const trimmedEmail = email.trim().toLowerCase()
+    const trimmedPassword = password.trim()
+
+    if (!trimmedEmail || !trimmedPassword) {
+      setError('Please enter both your email and password.')
+      return
+    }
+
     setLoading(true)
     setError('')
     try {
-      const data = await login({ email, password })
+      const data = await login({ email: trimmedEmail, password: trimmedPassword })
       const role = data?.staff?.role
       navigate(role === 'admin' ? '/admin/dashboard' : '/staff/dashboard', { replace: true })
     } catch (err) {
-      setError(err?.response?.data?.message ?? 'Invalid email or password.')
+      setError(err?.response?.data?.message ?? 'Invalid email or password. Please try again.')
     } finally {
       setLoading(false)
     }
@@ -82,8 +90,8 @@ export default function LoginPage({ brand = 'admin' }) {
         <p style={{ fontSize: '0.9375rem', color: '#6B5B4B', marginBottom: '0.375rem' }}>
           Welcome Back!
         </p>
-        <p style={{ fontSize: '0.8125rem', color: '#A89080', marginBottom: '1.75rem' }}>
-          Sign in to continue
+        <p style={{ fontSize: '0.8125rem', color: '#A89080', marginBottom: '1.75rem', textAlign: 'center' }}>
+          Use your registered CafeX credentials to continue.
         </p>
 
         {/* Role badge */}
@@ -121,6 +129,7 @@ export default function LoginPage({ brand = 'admin' }) {
               placeholder={isAdmin ? 'admin@cafex.com' : 'staff@cafex.com'}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              autoComplete="email"
               required
               autoFocus
               style={{
@@ -155,6 +164,7 @@ export default function LoginPage({ brand = 'admin' }) {
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                autoComplete="current-password"
                 required
                 style={{
                   width: '100%',
@@ -214,7 +224,7 @@ export default function LoginPage({ brand = 'admin' }) {
               padding: '0.875rem',
               borderRadius: '14px',
               border: 'none',
-              background: '#1E0E07',
+              background: accent,
               color: '#FFFDF8',
               fontSize: '0.9375rem',
               fontWeight: 700,
@@ -233,48 +243,6 @@ export default function LoginPage({ brand = 'admin' }) {
             {loading ? 'Signing in…' : 'Login'}
           </button>
         </form>
-
-        {/* Divider */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0.875rem',
-          margin: '1.25rem 0',
-          width: '100%',
-        }}>
-          <div style={{ flex: 1, height: '1px', background: '#E8DCCF' }} />
-          <span style={{ fontSize: '0.8125rem', color: '#A89080', whiteSpace: 'nowrap' }}>
-            or continue with
-          </span>
-          <div style={{ flex: 1, height: '1px', background: '#E8DCCF' }} />
-        </div>
-
-        {/* Social buttons (cosmetic) */}
-        <div style={{ display: 'flex', gap: '0.75rem', width: '100%', marginBottom: '1.5rem' }}>
-          {['G', 'A'].map((letter, i) => (
-            <button
-              key={letter}
-              type="button"
-              style={{
-                flex: 1,
-                padding: '0.625rem',
-                borderRadius: '12px',
-                border: '1.5px solid #E8DCCF',
-                background: '#FFFDF8',
-                fontSize: '1rem',
-                fontWeight: 700,
-                color: '#3D1E12',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '0.375rem',
-              }}
-            >
-              {i === 0 ? '🇬' : '🍎'} {letter === 'G' ? 'Google' : 'Apple'}
-            </button>
-          ))}
-        </div>
 
         {/* Role switch */}
         <p style={{ fontSize: '0.8125rem', color: '#A89080', textAlign: 'center' }}>
